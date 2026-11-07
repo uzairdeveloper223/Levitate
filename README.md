@@ -2,9 +2,9 @@
 
 <img src="linux/assets/levitate.svg" width="88" alt="Levitate icon">
 
-An Android air mouse for Linux. Aim your phone to move the pointer, roll it to scroll or switch workspaces, and click with tactile on-screen buttons.
+I built Levitate to use my Android phone as an air mouse on Linux. Aim the phone to move the pointer, roll it to scroll or switch workspaces, and use the on-screen buttons to click and drag.
 
-Native **Material 3 Android Views** and a small **Python/GTK companion**. Local Wi-Fi or a phone hotspot; encrypted QR pairing; no account or cloud.
+The Android app is Kotlin with Material 3. The Linux companion is Python and GTK. Connect both devices to the same Wi-Fi or your phone's hotspot, then scan the laptop's QR code. Pairing is encrypted and everything stays local. You don't need an account.
 
 **[Download v1.0.0](https://github.com/uzairdeveloper223/Levitate/releases/tag/v1.0.0)** · [Install and release notes](docs/RELEASE-1.0.0.md)
 
@@ -21,13 +21,13 @@ Native **Material 3 Android Views** and a small **Python/GTK companion**. Local 
 | Pause | Stop motion and release held buttons |
 | Touchpad | Finger movement, tap to click, two-finger scrolling |
 
-Automatic mode switching has a dwell time and hysteresis. Manual Point, Scroll and Spaces modes are also available. Settings include sensitivity, natural scrolling, haptics, screen-on behaviour, and a 30 Hz battery-saver mode. Middle click and media controls are included.
+The app waits for a stable tilt before changing modes, so small movements don't keep switching them. You can also select Point, Scroll or Spaces manually. Settings include sensitivity, natural scrolling, vibration, keeping the screen on, and a 30 Hz battery-saver mode. There are middle-click and media buttons too.
 
-Sensors measure **rotation**, not the phone’s position relative to the laptop. Levitate uses the top-edge direction from the fused rotation matrix; it does not pretend to locate a physical screen or integrate acceleration into position. Recenter with the screen facing up.
+Levitate uses the phone's rotation sensors to track where its top edge is pointing. Recenter sets your comfortable pointing direction. It can't measure the phone's position relative to the laptop, so recenter with the screen facing up whenever you change how you're holding it.
 
 ## Linux
 
-Python 3.10+, GTK 3, PyGObject, `cryptography`, and `qrcode` with Pillow are required. Ayatana AppIndicator provides the system tray. Run as your desktop user.
+You'll need Python 3.10+, GTK 3, PyGObject, `cryptography`, and `qrcode` with Pillow. Install Ayatana AppIndicator for the tray icon. Run the app as your normal desktop user.
 
 ### Install dependencies
 
@@ -67,15 +67,17 @@ sh linux/install.sh
 ~/.local/bin/levitate --tray
 ```
 
-Closing the window keeps the companion in the tray; **Quit Levitate** stops it. If the tray library is missing, closing quits. GNOME needs an AppIndicator/StatusNotifier extension (Ubuntu includes one). KDE and most tray-enabled desktops support it directly. Minimal compositors need a StatusNotifier host such as a Waybar tray.
+Close the window to keep Levitate in the tray. Choose Quit Levitate from the tray menu to stop it. If the tray library isn't installed, closing the window quits the app.
 
-The virtual mouse and keyboard use Linux **uinput**, so the pointer, buttons and scrolling work across Wayland and X11 independently of compositor-specific remote-input protocols. Distributions must permit virtual input devices. Workspace changes use configurable shortcuts rather than synthetic touchpad gestures. GNOME defaults are `META+PAGEUP` and `META+PAGEDOWN`; set your compositor’s bindings in Preferences.
+GNOME needs an AppIndicator/StatusNotifier extension; Ubuntu includes one. KDE supports it directly. On a minimal compositor, use a tray host such as Waybar.
 
-The listener uses TCP **45879** by default. Choose the shared Wi-Fi interface in the network selector; refresh after changing to a hotspot. If a firewall is enabled, allow this port from your local subnet. Guest-network client isolation can prevent pairing. IPv4 local networks are supported in this release.
+I use Linux uinput for the virtual mouse and keyboard. It works with Wayland and X11 once your account has permission to create the input device. Workspace switching sends the shortcuts you set in Preferences. The defaults are GNOME's `META+PAGEUP` and `META+PAGEDOWN`; change them to match your desktop.
+
+The companion listens on TCP port 45879. Choose the network shared with your phone and refresh the list after switching to a hotspot. If your firewall blocks pairing, allow this port from your local subnet. Some guest Wi-Fi networks block connections between devices. This release supports IPv4.
 
 ## Android
 
-Android 8.0+ (API 26). A game rotation vector or rotation vector sensor enables air-mouse control. Touchpad control remains available without a rotation sensor. The QR scanner operates on-device and requests camera permission only when opened.
+The app needs Android 8.0 or newer (API 26). Air-mouse control uses a game rotation vector or rotation vector sensor. You can still use the touchpad if your phone doesn't have one. The QR scanner runs on the phone and asks for camera permission when you open it.
 
 Build with JDK 17 or 21 and Android SDK 36:
 
@@ -87,7 +89,9 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Open Levitate on both devices, connect to the same Wi-Fi or hotspot, and scan the laptop QR. A pairing link can also be pasted manually. Click Recenter with the phone in the pointing position.
 
-Sensor subscriptions run at 60 Hz (30 Hz in battery saver) only while the Control page is visible, connected and unpaused. Diagram updates are capped at 10 Hz. Backgrounding the app stops sensors and releases mouse buttons. The connection remains available until Android destroys the activity; the app does not run a foreground service or acquire a wake lock. Pairing credentials are kept in memory: scan again after restarting the Android app.
+The phone samples motion at 60 Hz, or 30 Hz in battery saver, while the Control page is open, connected and unpaused. The diagram updates at most 10 times a second. Leaving the app stops the sensors and releases held mouse buttons.
+
+The connection can stay open while the activity exists. There isn't a background service or wake lock. Pairing stays in memory, so scan again after restarting the app.
 
 ## Repository
 
@@ -106,13 +110,15 @@ cd ../android
 ./gradlew :app:testDebugUnitTest :app:lintDebug --no-daemon
 ```
 
-See [testing notes](docs/TESTING.md) for hardware evidence, and [the protocol](docs/PROTOCOL.md) for local transport and pairing details. Linux uses distro packages instead of a bundled browser runtime. Build memory and runtime memory are distinct; Android Gradle compilation is limited to two workers and its single-use daemon exits afterward.
+My setup and test results are in [TESTING.md](docs/TESTING.md). The pairing messages are documented in [PROTOCOL.md](docs/PROTOCOL.md). The Linux app uses distro packages to keep the download small. Android builds use at most two Gradle workers, and the build daemon exits when they're done.
 
 ## Packages
 
-`sh linux/package.sh` creates a source/runtime tarball and, when `dpkg-deb` is available, a Debian package in `dist/`. The tarball includes the user-local installer and input setup script for other distributions. `sh linux/package-appimage.sh` can wrap the companion in a dependency-aware AppImage using an installed `appimagetool`; it uses the host’s Python/GTK packages, which must be installed. It is not a self-contained Python/GTK runtime.
+Run `sh linux/package.sh` to create the Linux tarball and Debian package in `dist/`. Debian packaging needs `dpkg-deb`. The tarball includes the installer and input setup script for other distributions.
 
-### Maintainer: local releases
+With `appimagetool` installed, run `sh linux/package-appimage.sh` for the AppImage. It uses your system's Python and GTK packages, so install those dependencies first.
+
+### Building a release locally
 
 With JDK, Android SDK 36/build-tools 35.0.0, Linux dependencies and `appimagetool` installed:
 
@@ -120,13 +126,15 @@ With JDK, Android SDK 36/build-tools 35.0.0, Linux dependencies and `appimagetoo
 sh scripts/release-local.sh
 ```
 
-This runs automated checks, builds the optimized Android release, signs it, creates Linux packages and writes `dist/SHA256SUMS`. The first run creates a dedicated signing key and random password in `~/.local/share/levitate-signing/` (or `LEVITATE_SIGNING_DIR`). **Back up that directory privately:** the same key is needed for future Android updates. It is never packaged or uploaded. Hosted GitHub checks are manual-only; source pushes and pull requests do not start paid build jobs. Release assets can be uploaded directly with `gh release create` from the maintainer's laptop.
+I build releases on my laptop and upload the files directly to GitHub Releases. The script runs the local checks, builds and signs the Android APK, packages Linux, and writes `dist/SHA256SUMS`. GitHub build checks only run when started manually.
 
-See [security notes](SECURITY.md) for pairing and signing details. `PRODUCT.md` is local planning context and is excluded from Git.
+On its first run, the script creates a signing key and random password in `~/.local/share/levitate-signing/`, or the directory set by `LEVITATE_SIGNING_DIR`. Back up that directory privately. Future Android updates need the same key. The script keeps it out of the packages and uploads.
+
+See [SECURITY.md](SECURITY.md) for pairing and signing details. I keep `PRODUCT.md` as local project notes, so it's in `.gitignore`.
 
 ## Contributing
 
-Bug reports should include desktop/compositor, distribution, Android version, sensor name (from Settings), and which mode fails. Never attach a current QR code, pairing token or private key. See [CONTRIBUTING.md](CONTRIBUTING.md).
+If something breaks, open an issue and tell me your phone, Android version, sensor name from Settings, Linux distribution and compositor. Include the mode you're using and what went wrong. Keep active QR codes, pairing tokens and private keys out of screenshots and logs. More details are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

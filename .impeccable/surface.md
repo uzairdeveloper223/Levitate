@@ -1,17 +1,15 @@
-# Native controller and companion
+# Android controller and Linux companion
 
-Mode: Operate. Phone-first remote control, laptop pairing and status. User-pinned Material 3 on Android, GTK on Linux. Code-first.
+Mode: Operate. Material 3 on Android, GTK on Linux.
 
-## Direction contract
+## Interface notes
 
-THESIS: A remote that communicates what the phone is doing, with physical mouse actions within thumb reach. Pairing leads the disconnected state; actual controls lead the connected state.
+I want the phone to show what mode it's in and keep the mouse buttons easy to reach. Show pairing actions when disconnected and focus on the controls after pairing.
 
-OWN-WORLD: Native system typography, blue primary and blue-gray tonal surfaces, restrained sea-green connected state, explicit error red. Material buttons, chips, sliders and switches; GTK header bar and ordinary keyboard-operable controls. Light for daytime use, dark for a dim laptop workspace, following the system unless overridden.
+Use system fonts, blue primary controls and blue-gray surfaces. Green shows a connected phone; red shows errors. Both light and dark themes follow the system unless changed in Settings. Use native Material buttons, sliders and switches on Android, and ordinary GTK controls on Linux.
 
-STORY: Scan the laptop, recenter while pointing, move. The phone identifies pointer, scrolling and workspace states. Connection status remains visible; pause and recenter are immediate.
+The phone's Control page has connection status, a phone diagram, mode selection, recenter/pause and large mouse buttons. Settings and instructions have their own pages. The diagram follows the phone's roll, and mode text changes after a stable tilt.
 
-FIRST VIEWPORT: App bar above connection status and pairing action. A central live phone silhouette shows roll and mode, followed by recenter/pause and large left/right mouse buttons. Settings and gesture instructions live in separate native pages. Laptop header above a large high-contrast QR and network selector, then device/input status and tray controls.
+The Linux window has the QR code and network selector, connection/input status, preferences and instructions. Keep the QR black on white with its quiet zone. Closing the window leaves the app in the tray when a tray host is available.
 
-FORM: Brief-pinned native Material 3 and GTK; direction roll acknowledged, user-pinned platform language wins. seed:10641c2c8d1847ac. Signature move: the phone silhouette follows sensor roll and mode text changes only on a stable gesture transition. Challenger discipline retained: specimen live feedback, media thumb reach, orienteering semantic state colors, boarding-pass readable pairing, lexicon readable measure, bitmap consistent scale; their artifact controls and typography are declined for native task clarity.
-
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+For UI changes, check real Android and GTK screens, both themes and larger text. My hardware checks and remaining test list are in `docs/TESTING.md`. Icon sources and licenses are in `THIRD_PARTY.md`.

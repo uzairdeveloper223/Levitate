@@ -1,6 +1,6 @@
 # Third-party software
 
-Levitate's original code and vector artwork are MIT licensed. Dependencies retain their licenses.
+Levitate's code and original icons are MIT licensed. The libraries it uses have their own licenses:
 
 - Kotlin, AndroidX, Material Components for Android: Apache-2.0.
 - ZXing and ZXing Android Embedded / JourneyApps: Apache-2.0. Scanner consumer rules and license metadata remain in their upstream artifacts.
@@ -12,4 +12,6 @@ Levitate's original code and vector artwork are MIT licensed. Dependencies retai
 - python-qrcode: BSD-3-Clause.
 - Pillow: HPND.
 
-No generated images or third-party icon artwork are bundled. Application and tray icons are original vectors in `linux/assets/`; Android carries the corresponding vector drawable. `linux/assets/levitate.png` is a 256 × 256 rasterization of the original `levitate.svg` for AppImage icon compatibility, rendered with librsvg via ffmpeg, and carries the same MIT license. The AppStream metadata is CC0-1.0.
+The app and tray icons are in `linux/assets/`. Android uses a matching vector drawable. `levitate.png` is a 256 × 256 copy of `levitate.svg`, converted with librsvg through ffmpeg because AppImage needs a PNG icon. It has the same MIT license as the SVG. There are no generated images or third-party icon packs in the downloads.
+
+The AppStream metadata is CC0-1.0.

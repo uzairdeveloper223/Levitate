@@ -1,19 +1,21 @@
 # Levitate local protocol v1
 
+These are the messages between the Android app and Linux companion. If you're changing the networking code, keep both sides compatible with this format.
+
 ## Pairing
 
 The QR encodes `levitate://pair?v=1&host=<IPv4>&port=<port>&token=<64 hex>&fp=<64 hex>&name=<hostname>`.
 
-- `token`: 256 random bits, generated for each companion process. New QR rotates it and disconnects the active phone. Restarting invalidates old links.
+- `token`: 256 random bits, generated when the companion starts. New QR replaces it and disconnects the phone. Restarting also invalidates old links.
 - `fp`: SHA-256 of the DER-encoded companion certificate. Android pins this certificate and checks its validity before sending the token.
-- The P-256 private key and certificate are stored under `$XDG_CONFIG_HOME/levitate/` (normally `~/.config/levitate/`) with private file permissions. Credentials are never part of the repository.
+- The P-256 private key and certificate live in `$XDG_CONFIG_HOME/levitate/`, normally `~/.config/levitate/`, with owner-only permissions. They stay on the laptop.
 - Android accepts local IPv4 addresses only. The QR is a control credential: anyone with it and network access can control the laptop.
 
 ## Transport
 
-TCP with `TCP_NODELAY`, wrapped in TLS 1.2 or newer. UTF-8 JSON objects separated by newlines. Maximum incoming frame is 2048 bytes, including newline. No compression, account, discovery broadcast, Internet service or telemetry.
+I use TCP with `TCP_NODELAY` and TLS 1.2 or newer. Each message is a UTF-8 JSON object followed by a newline. Incoming messages can be at most 2048 bytes, including that newline. Pairing and input stay on the local network.
 
-One active phone has exclusive control. The server handles one connection at a time, with a five-second total TLS-and-hello authentication deadline, a five-second read timeout after authentication, and a bounded listen backlog. Input is capped at 240 messages per second. Android validates the welcome before enabling controls. Its outgoing queue is bounded; overload disconnects instead of losing button-release messages. Disconnect revokes the session before releasing input, so commands buffered by the old session cannot execute afterward.
+One phone controls the laptop at a time. TLS and the hello message must finish within five seconds. Reads time out after five seconds once paired, and input is capped at 240 messages per second. Android checks the welcome before enabling controls. If its outgoing queue fills, it disconnects so Linux can release the mouse buttons. Disconnect invalidates the old session before releasing input, including commands already buffered for that session.
 
 Client hello:
 
@@ -39,4 +41,6 @@ Server response:
 | `release` | — | Release held mouse buttons and fractional state |
 | `ping` | `id`: monotonic millisecond timestamp | Heartbeat and measured round-trip latency |
 
-Pong includes `id`, `paused`, and `input_ready`. Android sends one heartbeat per second. Socket EOF, malformed frames, idle timeout, app backgrounding, tray pause, and explicit disconnect release held buttons. Pointer and workspace commands are ignored while the companion is paused. There is no remote shell, arbitrary key injection, file transfer, clipboard sharing, or executable command field.
+Pong includes `id`, `paused`, and `input_ready`. Android sends one heartbeat per second. Closing the connection, sending bad data, a read timeout, backgrounding the app, pausing from the tray or disconnecting releases held buttons. While paused, the companion ignores pointer and workspace commands.
+
+The command set is limited to the input actions above. It can't run a shell, type arbitrary text, transfer files or share the clipboard.
