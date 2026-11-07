@@ -1,0 +1,19 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="24dp" android:orientation="vertical">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/quick_start" android:textAppearance="@style/Text.Levitate.Headline" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/guide_pair" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/guide_pair_body" android:textAppearance="@style/Text.Levitate.Body" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/guide_point" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/guide_point_body" android:textAppearance="@style/Text.Levitate.Body" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/guide_spaces" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/guide_spaces_body" android:textAppearance="@style/Text.Levitate.Body" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/guide_scroll" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/guide_scroll_body" android:textAppearance="@style/Text.Levitate.Body" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/guide_click" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/guide_click_body" android:textAppearance="@style/Text.Levitate.Body" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/privacy" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/privacy_body" android:textAppearance="@style/Text.Levitate.Body" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="28dp" android:text="@string/about" android:textAppearance="@style/Text.Levitate.Body" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/websiteButton" style="@style/Widget.Material3.Button.TextButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/website" />
+    </LinearLayout>
+</ScrollView>

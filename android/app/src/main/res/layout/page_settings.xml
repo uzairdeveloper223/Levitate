@@ -1,0 +1,23 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/motion_settings" android:textAppearance="@style/Text.Levitate.Headline" />
+        <TextView android:id="@+id/sensitivityLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="@string/sensitivity" android:textAppearance="@style/Text.Levitate.Title" />
+        <com.google.android.material.slider.Slider android:id="@+id/sensitivitySlider" android:layout_width="match_parent" android:layout_height="wrap_content" android:valueFrom="500" android:valueTo="2600" android:value="1400" android:stepSize="100" android:contentDescription="@string/sensitivity" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/automaticSwitch" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="@string/automatic_gestures" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/automatic_hint" android:textAppearance="@style/Text.Levitate.Body" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/naturalSwitch" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:minHeight="56dp" android:text="@string/natural_scroll" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/hapticsSwitch" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="@string/vibration" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/batterySwitch" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="@string/battery_saver" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/battery_hint" android:textAppearance="@style/Text.Levitate.Body" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/awakeSwitch" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:minHeight="56dp" android:text="@string/keep_awake" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="28dp" android:text="@string/appearance" android:textAppearance="@style/Text.Levitate.Title" />
+        <com.google.android.material.button.MaterialButtonToggleGroup android:id="@+id/themeGroup" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" app:singleSelection="true" app:selectionRequired="true">
+            <com.google.android.material.button.MaterialButton android:id="@+id/themeSystem" style="@style/Widget.Levitate.Mode" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="@string/theme_system" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/themeLight" style="@style/Widget.Levitate.Mode" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/theme_light" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/themeDark" style="@style/Widget.Levitate.Mode" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/theme_dark" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="28dp" android:text="@string/device_sensors" android:textAppearance="@style/Text.Levitate.Title" />
+        <TextView android:id="@+id/sensorDescription" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textAppearance="@style/Text.Levitate.Body" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/disconnectButton" style="?attr/materialButtonOutlinedStyle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/disconnect" />
+    </LinearLayout>
+</ScrollView>
